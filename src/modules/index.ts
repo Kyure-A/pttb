@@ -1,3 +1,21 @@
+export function newTrigger(): void {
+    for (let trigger of ScriptApp.getScriptTriggers()) {
+        let function_name: string = trigger.getHandlerFunction();
+        if (function_name == "main" || function_name == "newTrigger") ScriptApp.deleteTrigger(trigger);
+    }
+
+    const now: Date = new Date();
+    const time: number[][] = [[7, 30], [8, 0], [8, 30]];
+
+
+    for (let i = 0; i < 3; i++) {
+        const date: Date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, time[i][0], time[i][1]);
+        ScriptApp.newTrigger("main").timeBased().at(date).create();
+    }
+    const trigger_date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 19, 0);
+    ScriptApp.newTrigger("newTrigger").timeBased().at(trigger_date).create();
+}
+
 export function getToday(delay: number = 0): string {
     const date: Date = new Date();
     date.setDate(date.getDate() + delay);
@@ -20,7 +38,7 @@ export function getSheet(sheet_name: string): string[][] {
     return value;
 }
 
-export function genTitle(delay: number = 0): string {
+export function titleBuilder(delay: number = 0): string {
     const today: string = getToday(delay);
     const day_of_week: string = getDayOfWeek(delay);
     const str: string = today + " " + "(" + day_of_week + ")";
@@ -34,7 +52,7 @@ export function is_specialday(today: string): boolean {
     else return false;
 }
 
-export function genFields(today: string, day_of_week: string): TimeTable[] {
+export function fieldsBuilder(today: string, day_of_week: string): TimeTable[] {
     let value: string[][];
 
     if (is_specialday(today)) value = getSheet(today);
@@ -71,8 +89,8 @@ export function main(): void {
     const message: DiscordMessage = {
         "embeds": [
             {
-                "title": genTitle(delay),
-                "fields": genFields(getToday(delay), getDayOfWeek(delay))
+                "title": titleBuilder(delay),
+                "fields": fieldsBuilder(getToday(delay), getDayOfWeek(delay))
             }
         ]
     }
