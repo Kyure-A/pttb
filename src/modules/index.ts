@@ -10,7 +10,7 @@ export function newTrigger(): void {
     if (now.getDay() + 1 == 6) plus = 2; // if tomorrow is Saturday
 
     const date: Date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1 + plus, 21, 0);
-    const new_trigger_date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1 + plus, 19, 0);
+    const new_trigger_date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1 + plus, 22, 0);
     ScriptApp.newTrigger("main").timeBased().at(date).create();
     ScriptApp.newTrigger("newTrigger").timeBased().at(new_trigger_date).create();
 }
