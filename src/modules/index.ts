@@ -5,12 +5,11 @@ export function newTrigger(): void {
     }
 
     const now: Date = new Date();
-    let plus: 0 | 1 | 2 = 0;
-    if (now.getDay() + 1 == 0) plus = 1; // if tomorrow is Sunday
-    if (now.getDay() + 1 == 6) plus = 2; // if tomorrow is Saturday
+    let plus: 1 | 2 = 1;
+    if (now.getDay() == 5) plus = 2; // if tomorrow is Saturday
 
-    const date: Date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1 + plus, 21, 0);
-    const new_trigger_date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1 + plus, 22, 0);
+    const date: Date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + plus, 21, 0);
+    const new_trigger_date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + plus, 22, 0);
     ScriptApp.newTrigger("main").timeBased().at(date).create();
     ScriptApp.newTrigger("newTrigger").timeBased().at(new_trigger_date).create();
 }
@@ -18,7 +17,7 @@ export function newTrigger(): void {
 export function getToday(delay: number = 0): string {
     const date: Date = new Date();
     date.setDate(date.getDate() + delay);
-    return Utilities.formatDate(date, "JST", "M/dd");
+    return Utilities.formatDate(date, "JST", "M/d");
 }
 
 export function getDayOfWeek(delay: number = 0): string {
